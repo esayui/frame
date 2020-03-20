@@ -13,6 +13,10 @@ public class testMQ {
 
 	@RabbitListener(queues = RabbitMQConfig.Frame_QUEUE)
 	public void testMQsdf(FrameUser message) throws Exception{
+
+
+
+
 		System.out.println(message);
 	}
 }
