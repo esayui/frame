@@ -22,16 +22,7 @@ import com.frame.kangan.data.mapper.FrameImageMapper;
 import com.frame.kangan.data.po.FrameImage;
 import com.frame.kangan.service.impl.QiniuServiceImpl;
 
-/** 
-* @ClassName: FileController 
 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-
-* @author kang.an@ele.me
-
-* @date 2016年5月26日 上午11:30:56 
-*  
-*/
 @RestController
 public class FileController {
    

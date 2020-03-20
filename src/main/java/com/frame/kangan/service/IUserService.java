@@ -12,16 +12,7 @@ import java.util.Set;
 
 import com.frame.kangan.data.po.FrameUser;
 
-/** 
-* @ClassName: IUserService 
 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-
-* @author kang.an@ele.me
-
-* @date 2016年6月22日 下午5:25:20 
-*  
-*/
 public interface IUserService {
 	
 	Set<String> getUserRolesByUserId(int userId); 

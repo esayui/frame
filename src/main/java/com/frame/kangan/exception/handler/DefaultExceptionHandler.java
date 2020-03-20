@@ -8,16 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-/**   
- *    
- * Project: frame   
- * Class: DefaultExceptionHandler   
- * Description: 
- * @author: Cheney   
- * @Date 2016年7月19日 下午3:45:35
- * @version 1.0
- *    
- */
+
 @ControllerAdvice
 public class DefaultExceptionHandler {
 	

@@ -19,16 +19,7 @@ import com.frame.kangan.data.mapper.FrameUserMapper;
 import com.frame.kangan.data.mapper.FrameUserPermissionMapper;
 import com.frame.kangan.service.IPermissionService;
 
-/** 
-* @ClassName: PermissionServiceImpl 
 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-
-* @author kang.an@ele.me
-
-* @date 2016年6月23日 上午11:01:38 
-*  
-*/
 @Service
 public class PermissionServiceImpl implements IPermissionService{
 

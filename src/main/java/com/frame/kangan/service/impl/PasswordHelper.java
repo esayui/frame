@@ -8,15 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.frame.kangan.data.po.FrameUser;
 
-/**
- * 
- * Project: shiro Class: PasswordHelper Description:
- * 
- * @author: Cheney
- * @Date 2016年6月30日 下午9:17:50
- * @version 1.0
- * 
- */
+
 @Service
 public class PasswordHelper {
 

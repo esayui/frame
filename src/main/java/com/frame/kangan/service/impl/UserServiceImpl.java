@@ -17,16 +17,7 @@ import com.frame.kangan.data.mapper.FrameUserMapper;
 import com.frame.kangan.data.po.FrameUser;
 import com.frame.kangan.service.IUserService;
 
-/** 
-* @ClassName: userServiceImpl 
 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-
-* @author kang.an@ele.me
-
-* @date 2016年6月23日 上午11:00:54 
-*  
-*/
 @Service
 public class UserServiceImpl implements IUserService{
 

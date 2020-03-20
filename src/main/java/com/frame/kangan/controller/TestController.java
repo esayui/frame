@@ -39,16 +39,7 @@ import com.frame.kangan.data.mapper.FrameUserPermissionMapper;
 import com.frame.kangan.data.po.FrameUser;
 import com.google.gson.Gson;
 
-/** 
-* @ClassName: TestController 
 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-
-* @author kang.an@ele.me
-
-* @date 2016年5月31日 下午3:24:27 
-*  
-*/
 @RestController
 @EnableCaching
 public class TestController {

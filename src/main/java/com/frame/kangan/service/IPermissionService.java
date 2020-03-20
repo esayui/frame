@@ -10,16 +10,7 @@ package com.frame.kangan.service;
 
 import java.util.Set;
 
-/** 
-* @ClassName: IPermissionService 
 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-
-* @author kang.an@ele.me
-
-* @date 2016年6月22日 下午5:25:11 
-*  
-*/
 public interface IPermissionService {
 	
 	Set<String> getUserPermissionCodeByUserId(int userId);
