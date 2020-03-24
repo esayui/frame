@@ -1,15 +1,34 @@
 package com.frame.rengu.data.po;
 
+import com.baomidou.mybatisplus.annotations.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
+
+@TableName(value = "tb_mov")
 public class TYPE_J_MOV implements Serializable {
-    private String id = UUID.randomUUID().toString();
+
+    @TableId(type = IdType.UUID)
+    private String id  = UUID.randomUUID().toString();
 
     /**
      *  turn：0 = 减速  1 = 加速
      */
     private int turn;
+
+    private Date createTime = new Date();
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public TYPE_J_MOV(String id, int turn) {
         this.id = id;

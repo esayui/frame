@@ -1,34 +1,62 @@
 package com.frame.rengu.web.socket;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.frame.rengu.config.RabbitMQConfig;
+import com.frame.rengu.data.mapper.TYPE_J_CONTROLMapper;
+import com.frame.rengu.data.mapper.TYPE_J_MOVMapper;
+import com.frame.rengu.data.po.TYPE_J_CONTROL;
+import com.frame.rengu.data.po.TYPE_J_MOV;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.ParameterMap;
 import org.yeauty.pojo.Session;
 
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint(prefix = "netty-websocket")
+@ServerEndpoint( prefix = "netty-websocket")
 @Component
 public class MyWebSocket {
 
     private static Map<Session,String> webSocketSet = new HashMap<Session, String>();
 
 
+    public static MyWebSocket myWebSocket = null;
+
+
+    @Autowired
+    TYPE_J_CONTROLMapper type_j_controlMapper;
+
+    @Autowired
+    TYPE_J_MOVMapper type_j_movMapper;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
+
+    @PostConstruct
+    public void init(){}
+
+    public MyWebSocket(){
+        myWebSocket = this;
+    }
+
+
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
         System.out.println("new connection");
 
-        String paramValue = parameterMap.getParameter("paramKey");
-        System.out.println(paramValue);
 
-        webSocketSet.put(session,"");
+
 
     }
 
@@ -46,8 +74,27 @@ public class MyWebSocket {
 
     @OnMessage
     public void onMessage(Session session, String message) {
+
+        webSocketSet.put(session,"");
+
+        JSONObject jsonObject = JSON.parseObject(message);
+        if(jsonObject.get("type").equals("control")){
+            TYPE_J_CONTROL type_j_control = JSON.parseObject(jsonObject.get("data").toString(),TYPE_J_CONTROL.class);
+            myWebSocket.type_j_controlMapper.insert(type_j_control);
+            rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#control",type_j_control);
+
+
+        }else if(jsonObject.get("type").equals("mov")){
+            TYPE_J_MOV type_j_mov = JSON.parseObject(jsonObject.get("data").toString(), TYPE_J_MOV.class);
+            myWebSocket.type_j_movMapper.insert(type_j_mov);
+            rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#mov",type_j_mov);
+
+        }
+
+
+
         System.out.println(message);
-        session.sendText("Hello Netty!");
+        //session.sendText("Hello World!");
     }
 
 

@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -81,6 +82,28 @@ public class RabbitMQConfig {
 	}
 
 
+	@Bean
+	public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+		final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+		rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+		return rabbitTemplate;
+	}
+
+	@Bean
+	public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+		return new Jackson2JsonMessageConverter();
+	}
+
+	@Bean
+	public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory){
+		SimpleRabbitListenerContainerFactory listenerContainerFactory=new SimpleRabbitListenerContainerFactory();
+		listenerContainerFactory.setConnectionFactory(connectionFactory);
+		//--加上这句
+		listenerContainerFactory.setMessageConverter(producerJackson2MessageConverter());
+		return listenerContainerFactory;
+
+
+	}
 
 
 }

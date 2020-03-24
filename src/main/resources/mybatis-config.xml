@@ -31,6 +31,7 @@
         <!--
         <typeAlias alias="taskVo" type="xxx.vo.TaskVo" />
          -->
+        <typeAlias alias="type_j_control" type="com.frame.rengu.data.po.TYPE_J_CONTROL" />
     </typeAliases>
     <!-- 插件配置, spring 中配置，此处就可以不用配置。 -->
     <!--

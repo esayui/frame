@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.frame.rengu.config.RabbitMQConfig;
+import com.frame.rengu.data.mapper.TYPE_J_CONTROLMapper;
 import com.frame.rengu.data.po.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,9 +29,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.frame.rengu.data.mapper.FrameImageMapper;
 import com.frame.rengu.data.mapper.FrameUserMapper;
@@ -57,6 +56,8 @@ public class TestController {
 	private RabbitTemplate rabbitTemplate;
 
 
+	@Autowired
+	private TYPE_J_CONTROLMapper type_j_controlMapper;
 	
 	@Autowired
 	private FrameUserPermissionMapper frameUserPermissionMapper;
@@ -147,30 +148,53 @@ public class TestController {
 		System.out.println("123123123");
 	}
 	
-	
-	@RequestMapping("/testRabbitMq")
-	@ResponseBody
-	public void testRabbitMq(){
+
+	@RequestMapping("/sendEng")
+	public void sendEng(HttpServletRequest httpServletRequest){
+		TYPE_J_ENG type_j_eng = new TYPE_J_ENG();
+		String electricValue  =httpServletRequest.getParameter("electric");
+		type_j_eng.setElectric(Integer.parseInt(electricValue));
+
+		rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#eng",type_j_eng);
+
+
+	}
+
+	@RequestMapping("/sendControl")
+	public void sendControl(HttpServletRequest httpServletRequest){
 
 		TYPE_J_CONTROL type_j_control = new TYPE_J_CONTROL();
+		String ControlValue  =httpServletRequest.getParameter("Control");
+		type_j_control.setControl(Integer.parseInt(ControlValue));
+		type_j_controlMapper.insert(type_j_control);
+
 		rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#control",type_j_control);
 
-		TYPE_J_ENG type_j_ENG = new TYPE_J_ENG();
-		rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#eng",type_j_ENG);
 
+	}
+
+	@RequestMapping("/sendMov")
+	public void sendMov(HttpServletRequest httpServletRequest){
+		String turnValue = httpServletRequest.getParameter("turn");
 		TYPE_J_MOV type_j_mov = new TYPE_J_MOV();
+		type_j_mov.setTurn(Integer.parseInt(turnValue));
 		rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#mov",type_j_mov);
 
+	}
+
+	@RequestMapping("/sendPos")
+	public void sendPos(HttpServletRequest httpServletRequest){
 		TYPE_J_POS type_j_pos = new TYPE_J_POS();
+		String x = httpServletRequest.getParameter("X");
+		type_j_pos.setX(x);
+		String y = httpServletRequest.getParameter("Y");
+		type_j_pos.setY(y);
+		String fvm = httpServletRequest.getParameter("fvm");
+		type_j_pos.setFvm(fvm);
+
+
 		rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "key.#pos",type_j_pos);
 
-
-
-
-
-		System.out.println("hassend");
-
-        //simpMessagingTemplate.convertAndSend("/topic/getUser",user);
 	}
 	
 	@RequestMapping("/testPermission")

@@ -1,13 +1,31 @@
 package com.frame.rengu.data.po;
 
+import com.baomidou.mybatisplus.annotations.IdType;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
+
+@TableName(value = "tb_pos")
 public class TYPE_J_POS implements Serializable {
 
-    private String id = UUID.randomUUID().toString();
+
+    @TableId(type = IdType.UUID)
+    private String id  = UUID.randomUUID().toString();
 
     public TYPE_J_POS() {
+
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public TYPE_J_POS(String id, String x, String y, String fvm) {
@@ -21,8 +39,13 @@ public class TYPE_J_POS implements Serializable {
 
     private String Y;
 
+    private Date createTime = new Date();
+
     //航速
     private String fvm;
+
+    //路程
+    private String voyage;
 
 
     public String getId() {
@@ -55,5 +78,13 @@ public class TYPE_J_POS implements Serializable {
 
     public void setFvm(String fvm) {
         this.fvm = fvm;
+    }
+
+    public String getVoyage() {
+        return voyage;
+    }
+
+    public void setVoyage(String voyage) {
+        this.voyage = voyage;
     }
 }
